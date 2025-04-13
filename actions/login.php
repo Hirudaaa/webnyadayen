@@ -1,5 +1,7 @@
 <?php
-session_start();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 require_once '../config/db.php';
 
 if (isset($_POST['login'])) {
@@ -37,10 +39,10 @@ if (isset($_POST['login'])) {
             }
             exit;
         } else {
-            $_SESSION['error'] = "Incorrect password.";
+            $_SESSION['error'] = "Username or password is incorrect.";
         }
     } else {
-        $_SESSION['error'] = "User not found.";
+        $_SESSION['error'] = "Username or password is incorrect.";
     }
 
     // Redirect back to login with error

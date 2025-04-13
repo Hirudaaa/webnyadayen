@@ -1,47 +1,64 @@
 <?php
-session_start();
 require_once '../middlewares/admin_check.php';
 require_once '../config/db.php';
 
-// Optional: check if user is admin
-if ($_SESSION['role'] !== 'admin') {
-    header("Location: ../index.php");
-    exit;
-}
+$page = 'dashboard';
+$pageTitle = 'Dashboard';
+
+// Dashboard data
+$totalProducts = $conn->query("SELECT COUNT(*) AS count FROM products")->fetch_assoc()['count'];
+$totalUsers = $conn->query("SELECT COUNT(*) AS count FROM users")->fetch_assoc()['count'];
+$pendingOrders = $conn->query("SELECT COUNT(*) AS count FROM orders WHERE status = 'pending'")->fetch_assoc()['count'];
+$approvedOrders = $conn->query("SELECT COUNT(*) AS count FROM orders WHERE status = 'approved'")->fetch_assoc()['count'];
+$shippedOrders = $conn->query("SELECT COUNT(*) AS count FROM orders WHERE status = 'shipped'")->fetch_assoc()['count'];
+
+ob_start();
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
-    <style>
-        body { font-family: Arial, sans-serif; background: #f4f4f4; padding: 20px; }
-        .container { max-width: 800px; margin: auto; background: white; padding: 20px; border-radius: 10px; }
-        h1 { text-align: center; margin-bottom: 30px; }
-        .admin-links { display: flex; justify-content: space-around; gap: 20px; }
-        .admin-links a {
-            display: block;
-            text-align: center;
-            background: #3498db;
-            color: white;
-            padding: 20px;
-            text-decoration: none;
-            border-radius: 8px;
-            flex: 1;
-            transition: 0.3s ease;
-        }
-        .admin-links a:hover { background: #2980b9; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Admin Dashboard</h1>
-        <div class="admin-links">
-            <a href="products.php">Manage Products</a>
-            <a href="orders.php">View Orders</a>
-            <a href="users.php">Manage Users</a>
+
+<h2 class="mb-4">Dashboard</h2>
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">Products</h5>
+                <p class="display-6"><?= $totalProducts ?></p>
+            </div>
         </div>
     </div>
-</body>
-</html>
+    <div class="col-md-3">
+        <div class="card bg-secondary text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">Users</h5>
+                <p class="display-6"><?= $totalUsers ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card bg-warning text-dark h-100">
+            <div class="card-body">
+                <h5 class="card-title">Pending</h5>
+                <p class="display-6"><?= $pendingOrders ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card bg-info text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">Approved</h5>
+                <p class="display-6"><?= $approvedOrders ?></p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-2">
+        <div class="card bg-success text-white h-100">
+            <div class="card-body">
+                <h5 class="card-title">Shipped</h5>
+                <p class="display-6"><?= $shippedOrders ?></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<?php
+$content = ob_get_clean();
+require 'layout.php';
