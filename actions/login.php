@@ -25,7 +25,7 @@ if (isset($_POST['login'])) {
         $user = $res->fetch_assoc();
 
         // Check password (MD5 for demo, use password_hash in real apps)
-        if ($user['password'] === md5($password)) {
+        if ($user['password'] === ($password)) {
             // Set session data
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['name'] = $user['name'];
