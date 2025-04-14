@@ -39,31 +39,46 @@ ob_start();
         <div class="alert alert-success">Product added successfully!</div>
     <?php endif; ?>
     <a href="add_product.php" class="btn btn-primary mb-3">+ Add New Product</a>
-    <table class="table table-bordered table-striped">
-        <thead>
-        <tr>
-            <th>#</th>
-            <th>Image</th>
-            <th>Name</th>
-            <th>Price ($)</th>
-            <th>Actions</th>
-        </tr>
+    <div class="table-responsive">
+    <table class="table table-hover table-borderless align-middle shadow-sm rounded">
+        <thead class="table-light">
+            <tr>
+                <th>#</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th class="d-none d-md-table-cell">Description</th>
+                <th>Actions</th>
+            </tr>
         </thead>
         <tbody>
-        <?php $i = 1; while ($row = $result->fetch_assoc()): ?>
+            <?php foreach ($result as $index => $product): ?>
             <tr>
-                <td><?= $i++ ?></td>
-                <td><img src="../assets/images/<?= $row['image'] ?>" class="thumbnail" alt=""></td>
-                <td><?= htmlspecialchars($row['name']) ?></td>
-                <td><?= number_format($row['price'], 2) ?></td>
+                <td><?= $index + 1 ?></td>
                 <td>
-                    <a href="edit_product.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-warning">Edit</a>
-                    <a href="../actions/delete_product.php?id=<?= $row['id'] ?>" class="btn btn-sm btn-danger" onclick="return confirm('Delete this product?')">Delete</a>
+                    <img src="../assets/images/<?= $product['image'] ?>" alt="<?= htmlspecialchars($product['name']) ?>" width="60" height="60" style="object-fit:cover; border-radius:6px;">
+                </td>
+                <td><?= htmlspecialchars($product['name']) ?></td>
+                <td class="text-success fw-semibold">$<?= number_format($product['price'], 2) ?></td>
+                <td class="d-none d-md-table-cell text-muted small">
+                    <?= strlen($product['description']) > 50 ? substr($product['description'], 0, 50) . '...' : $product['description'] ?>
+                </td>
+                <td>
+                    <a href="edit_product.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary me-1">
+                        ✏️ Edit
+                    </a>
+                    <form action="actions/delete_product.php" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                        <input type="hidden" name="id" value="<?= $product['id'] ?>">
+                        <button type="submit" class="btn btn-sm btn-outline-danger">
+                            🗑️ Delete
+                        </button>
+                    </form>
                 </td>
             </tr>
-        <?php endwhile; ?>
+            <?php endforeach; ?>
         </tbody>
     </table>
+</div>
 </div>
 
 </body>

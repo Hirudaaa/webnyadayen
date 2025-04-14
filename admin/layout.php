@@ -4,6 +4,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <meta charset="UTF-8">
     <title><?= $pageTitle ?? 'Admin' ?></title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -44,5 +45,37 @@
         <?= $content ?>
     </div>
 </div>
+<script>
+    // Store previous value on focus
+    function storePreviousStatus(selectElement) {
+        selectElement.dataset.prevValue = selectElement.value;
+    }
+
+    // Confirm on change
+    function confirmStatusChange(event, orderId) {
+        const select = event.target;
+        const newValue = select.value;
+        const prevValue = select.dataset.prevValue;
+
+        event.preventDefault();
+
+        Swal.fire({
+            title: 'Are you sure?',
+            text: `Change status to "${newValue}"?`,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, update it!',
+            cancelButtonText: 'No, cancel',
+            reverseButtons: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('statusForm' + orderId).submit();
+            } else {
+                // Revert to previous value
+                select.value = prevValue;
+            }
+        });
+    }
+</script>
 </body>
 </html>
