@@ -67,7 +67,7 @@ ob_start();
                     <a href="edit_product.php?id=<?= $product['id'] ?>" class="btn btn-sm btn-outline-primary me-1">
                         ✏️ Edit
                     </a>
-                    <form action="actions/delete_product.php" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?');">
+                    <form action="../actions/delete_product.php" method="POST" class="d-inline" onsubmit="return confirm('Are you sure you want to delete this product?');">
                         <input type="hidden" name="id" value="<?= $product['id'] ?>">
                         <button type="submit" class="btn btn-sm btn-outline-danger">
                             🗑️ Delete

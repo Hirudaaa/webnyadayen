@@ -14,8 +14,8 @@ $res = $conn->query("SELECT image FROM products WHERE id = $id");
 if ($res && $res->num_rows > 0) {
     $img = $res->fetch_assoc()['image'];
     $conn->query("DELETE FROM products WHERE id = $id");
-    @unlink("../assets/images/$img");
 }
+
 
 header("Location: ../admin/products.php?deleted=1");
 exit;

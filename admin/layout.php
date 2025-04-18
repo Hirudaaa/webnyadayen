@@ -14,7 +14,8 @@
             font-family: 'Inter', sans-serif;
         }
         .sidebar {
-            height: 100vh;
+            min-height: 100vh;
+            height: auto;
             background: #1f2937;
             color: #fff;
             padding-top: 1.5rem;

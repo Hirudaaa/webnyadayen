@@ -73,10 +73,10 @@ ob_start();
                     <tr>
                         <td><?= $i + 1 ?></td>
                         <td><?= htmlspecialchars($order['user_name']) ?></td>
-                        <td><?= htmlspecialchars($order['product_name']) ?></td>
+                        <td><?= htmlspecialchars($order['id']['product_name']) ?></td>
                         <td><?= $order['quantity'] ?></td>
                         <td class="text-success fw-bold">
-                            $<?= number_format($order['price'] * $order['quantity'], 2) ?>
+                            <?= number_format($order['price'] * $order['quantity'], 2) ?>
                         </td>
                         <td>
                         <form method="POST" action="../actions/update_orderstatus.php" class="d-inline" id="statusForm<?= $order['id'] ?>">
